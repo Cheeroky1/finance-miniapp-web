@@ -103,8 +103,21 @@ code{
   background: #fff;
 }
 
-.screen{ display:none; }
-.screen.active{ display:block; }
+.screen{
+  display:none;
+  opacity:0;
+  transform: translateY(8px);
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+.screen.active{
+  display:block;
+}
+
+.screen.visible{
+  opacity:1;
+  transform: translateY(0);
+}
 
 .screen-title{
   font-weight:800;
@@ -171,5 +184,6 @@ code{
   opacity:1;
   transform:translateX(-50%) translateY(0);
 }
+
 
 
