@@ -67,13 +67,13 @@ document.getElementById("incomeSave").addEventListener("click", () => {
 
   if (!amount || amount <= 0) {
     tg?.HapticFeedback?.notificationOccurred("error");
-    alert("Введите сумму больше 0");
+    showToast("Введите сумму больше 0");
     return;
   }
 
   // Пока просто подтверждение (следующим шагом отправим в бота)
   tg?.HapticFeedback?.notificationOccurred("success");
-  alert(`Доход сохранён: +${amount} RUB${comment ? "\n" + comment : ""}`);
+  showToast(`Доход сохранён: +${amount} RUB${comment ? "\n" + comment : ""}`);
 
   clearInputs(["incomeAmount", "incomeComment"]);
   showScreen("menu");
@@ -85,14 +85,15 @@ document.getElementById("expenseSave").addEventListener("click", () => {
 
   if (!amount || amount <= 0) {
     tg?.HapticFeedback?.notificationOccurred("error");
-    alert("Введите сумму больше 0");
+    showToast("Введите сумму больше 0");
     return;
   }
 
   tg?.HapticFeedback?.notificationOccurred("success");
-  alert(`Расход сохранён: -${amount} RUB${comment ? "\n" + comment : ""}`);
+  showToast(`Расход сохранён: -${amount} RUB${comment ? "\n" + comment : ""}`);
 
   clearInputs(["expenseAmount", "expenseComment"]);
   showScreen("menu");
 });
+
 
