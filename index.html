@@ -1,23 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Finance Mini App</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Учет финансов</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="app">
+    <header class="topbar">
+      <div class="title">Учет финансов</div>
+      <div class="subtitle" id="subtitle">Меню</div>
+    </header>
 
-    <div class="container">
-        <h1>Finance Mini App 💸</h1>
-        <p>Мини-приложение подключено</p>
+    <main class="content">
+      <!-- MENU -->
+      <section id="screen-menu" class="screen active">
+        <div class="card">
+          <div class="help">
+            <div class="help-title">Инструкция</div>
+            <div class="help-text">
+              • Расход: <code>продукты 1200</code> / <code>такси 350</code><br>
+              • Доход: <code>зарплата 90000</code><br>
+              • Копилка: <code>копилка 500</code> или <code>копилка -500</code>
+            </div>
+          </div>
 
-        <button id="testBtn">Проверить Telegram</button>
+          <div class="vstack">
+            <button class="btn" data-nav="month">📅 Месяц</button>
+            <button class="btn" data-nav="income">➕ Доход</button>
+            <button class="btn" data-nav="expense">➖ Расход</button>
+            <button class="btn" data-nav="last">🕒 Последние</button>
+            <button class="btn" data-nav="pig">🐷 Копилка</button>
+            <button class="btn btn-danger" data-nav="undo">↩️ Отменить последнюю</button>
+          </div>
+        </div>
+      </section>
 
-        <div id="output"></div>
-    </div>
+      <!-- PLACEHOLDERS (пока заглушки) -->
+      <section id="screen-month" class="screen">
+        <div class="card">
+          <div class="screen-title">📅 Месяц</div>
+          <div class="muted">Здесь будут итоги месяца и категории (как в боте).</div>
+        </div>
+        <button class="btn btn-ghost" data-back>↪ Меню</button>
+      </section>
 
-    <script src="app.js"></script>
+      <section id="screen-income" class="screen">
+        <div class="card">
+          <div class="screen-title">➕ Доход</div>
+          <div class="muted">Здесь будет форма “Доход” (или быстрый ввод как в боте).</div>
+        </div>
+        <button class="btn btn-ghost" data-back>↪ Меню</button>
+      </section>
+
+      <section id="screen-expense" class="screen">
+        <div class="card">
+          <div class="screen-title">➖ Расход</div>
+          <div class="muted">Здесь будет форма “Расход” (или быстрый ввод как в боте).</div>
+        </div>
+        <button class="btn btn-ghost" data-back>↪ Меню</button>
+      </section>
+
+      <section id="screen-last" class="screen">
+        <div class="card">
+          <div class="screen-title">🕒 Последние</div>
+          <div class="muted">Здесь будет список последних операций.</div>
+        </div>
+        <button class="btn btn-ghost" data-back>↪ Меню</button>
+      </section>
+
+      <section id="screen-pig" class="screen">
+        <div class="card">
+          <div class="screen-title">🐷 Копилка</div>
+          <div class="muted">Здесь будут цели и суммы (как в боте).</div>
+        </div>
+        <button class="btn btn-ghost" data-back>↪ Меню</button>
+      </section>
+
+      <section id="screen-undo" class="screen">
+        <div class="card">
+          <div class="screen-title">↩️ Отменить последнюю</div>
+          <div class="muted">Здесь будет кнопка подтверждения undo.</div>
+        </div>
+        <button class="btn btn-ghost" data-back>↪ Меню</button>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
