@@ -2,112 +2,98 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Учет финансов</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Finance Mini App</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="app">
     <header class="topbar">
-      <div class="title">Учет финансов</div>
-      <div class="subtitle" id="subtitle">Меню</div>
+      <div class="topbar__title" id="topTitle">Месяц</div>
+      <div class="topbar__subtitle" id="topSubtitle"></div>
     </header>
 
-    <main class="content">
-
-      <!-- MENU -->
-      <section id="screen-menu" class="screen active visible">
-        <div class="card">
-          <div class="help">
-            <div class="help-title">Инструкция</div>
-            <div class="help-text">
-              • Доход/Расход — через формы ниже.<br>
-              • История — последние записи и удаление.<br>
-              • Копилка — цели, emoji, пополнение/снятие.
+    <main class="content" id="content">
+      <!-- MONTH -->
+      <section id="screen-month" class="screen active">
+        <div class="card card--kpi">
+          <div class="kpi">
+            <div class="kpi__item">
+              <div class="kpi__label">Доход</div>
+              <div class="kpi__value" id="kpiIncome">0</div>
+              <div class="kpi__sub">RUB</div>
             </div>
-          </div>
-
-          <div class="vstack">
-            <button class="btn" data-nav="month">📅 Месяц</button>
-            <button class="btn" data-nav="income">➕ Доход</button>
-            <button class="btn" data-nav="expense">➖ Расход</button>
-            <button class="btn" data-nav="history">📜 История</button>
-            <button class="btn" data-nav="piggy">🐷 Копилка</button>
+            <div class="kpi__item">
+              <div class="kpi__label">Расход</div>
+              <div class="kpi__value" id="kpiExpense">0</div>
+              <div class="kpi__sub">RUB</div>
+            </div>
+            <div class="kpi__item">
+              <div class="kpi__label">Баланс</div>
+              <div class="kpi__value" id="kpiBalance">0</div>
+              <div class="kpi__sub">RUB</div>
+            </div>
           </div>
         </div>
-      </section>
 
-      <!-- MONTH -->
-      <section id="screen-month" class="screen">
         <div class="card">
-          <div class="row-between">
+          <div class="card__head">
             <div>
-              <div class="screen-title">📅 Месяц</div>
-              <div class="muted" id="monthPeriod"></div>
+              <div class="card__title">Расходы по категориям</div>
+              <div class="card__meta" id="monthMeta">—</div>
             </div>
-            <button class="btn btn-ghost btn-small" id="monthRefresh">Обновить</button>
+            <button class="btn btn--ghost btn--sm" id="monthRefresh">Обновить</button>
           </div>
-
-          <div class="kpi-grid">
-            <div class="kpi">
-              <div class="kpi-label">Доходы</div>
-              <div class="kpi-value" id="kpiIncome">0</div>
-              <div class="kpi-sub">RUB</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-label">Расходы</div>
-              <div class="kpi-value" id="kpiExpense">0</div>
-              <div class="kpi-sub">RUB</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-label">Баланс</div>
-              <div class="kpi-value" id="kpiBalance">0</div>
-              <div class="kpi-sub">RUB</div>
-            </div>
+          <div class="chart">
+            <canvas id="pie" width="320" height="320" aria-label="Круговая диаграмма"></canvas>
           </div>
-
-          <div class="divider"></div>
-
-          <div class="row-between">
-            <div class="block-title">Расходы по категориям</div>
-            <div class="muted small" id="monthTotalExpense"></div>
-          </div>
-
-          <div class="chart-wrap">
-            <canvas id="pie" width="320" height="320" aria-label="Круговая диаграмма расходов"></canvas>
-          </div>
-
           <div class="list" id="monthCats"></div>
         </div>
 
-        <button class="btn btn-ghost" data-back>↪ Меню</button>
+        <!-- PIGGY (collapsible) -->
+        <div class="card">
+          <button class="collapse" id="piggyToggle" type="button">
+            <div class="collapse__left">
+              <div class="collapse__title">🐷 Копилка</div>
+              <div class="collapse__meta" id="piggyMeta">Свернуто</div>
+            </div>
+            <div class="collapse__right">
+              <span class="chev" id="piggyChev">⌄</span>
+            </div>
+          </button>
+
+          <div class="collapse__body" id="piggyBody" hidden>
+            <div class="row row--between">
+              <div class="muted">Цели и баланс</div>
+              <button class="btn btn--ghost btn--sm" id="piggyAddGoal">+ Цель</button>
+            </div>
+
+            <div class="list" id="piggyGoals"></div>
+            <div class="hint">Свайпни цель влево, чтобы удалить.</div>
+          </div>
+        </div>
       </section>
 
       <!-- INCOME -->
       <section id="screen-income" class="screen">
         <div class="card">
-          <div class="screen-title">➕ Доход</div>
+          <div class="card__title">➕ Доход</div>
 
           <label class="label">Сумма (RUB)</label>
           <input id="incomeAmount" class="input" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Например: 90000">
 
-          <label class="label">Категория</label>
-          <select id="incomeCategory" class="input select"></select>
-
           <label class="label">Комментарий (необязательно)</label>
-          <input id="incomeComment" class="input input-small" type="text" maxlength="80" placeholder="Например: зарплата">
+          <input id="incomeComment" class="input input--sm" type="text" maxlength="80" placeholder="Например: зарплата">
 
-          <button id="incomeSave" class="btn btn-primary" disabled>Сохранить</button>
+          <button id="incomeSave" class="btn btn--primary" disabled>Сохранить</button>
         </div>
-
-        <button class="btn btn-ghost" data-back>↪ Меню</button>
       </section>
 
       <!-- EXPENSE -->
       <section id="screen-expense" class="screen">
         <div class="card">
-          <div class="screen-title">➖ Расход</div>
+          <div class="card__title">➖ Расход</div>
 
           <label class="label">Сумма (RUB)</label>
           <input id="expenseAmount" class="input" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Например: 350">
@@ -116,57 +102,54 @@
           <select id="expenseCategory" class="input select"></select>
 
           <label class="label">Комментарий (необязательно)</label>
-          <input id="expenseComment" class="input input-small" type="text" maxlength="80" placeholder="Например: такси">
+          <input id="expenseComment" class="input input--sm" type="text" maxlength="80" placeholder="Например: такси">
 
-          <button id="expenseSave" class="btn btn-primary" disabled>Сохранить</button>
+          <button id="expenseSave" class="btn btn--primary" disabled>Сохранить</button>
         </div>
-
-        <button class="btn btn-ghost" data-back>↪ Меню</button>
       </section>
 
       <!-- HISTORY -->
       <section id="screen-history" class="screen">
         <div class="card">
-          <div class="row-between">
+          <div class="card__head">
             <div>
-              <div class="screen-title">📜 История</div>
-              <div class="muted small" id="historyHint">Последние операции</div>
+              <div class="card__title">📜 История</div>
+              <div class="card__meta">Последние операции</div>
             </div>
-            <button class="btn btn-ghost btn-small" id="historyClear">Очистить</button>
           </div>
 
           <div class="list" id="historyList"></div>
         </div>
-
-        <button class="btn btn-ghost" data-back>↪ Меню</button>
       </section>
-
-      <!-- PIGGY -->
-      <section id="screen-piggy" class="screen">
-        <div class="card">
-          <div class="row-between">
-            <div>
-              <div class="screen-title">🐷 Копилка</div>
-              <div class="muted small">Цели и их баланс</div>
-            </div>
-            <button class="btn btn-ghost btn-small" id="piggyAddGoal">+ Цель</button>
-          </div>
-
-          <div class="list" id="piggyGoals"></div>
-        </div>
-
-        <button class="btn btn-ghost" data-back>↪ Меню</button>
-      </section>
-
     </main>
+
+    <!-- TAB BAR -->
+    <nav class="tabbar" role="navigation" aria-label="Навигация">
+      <button class="tab active" data-tab="month" type="button">
+        <div class="tab__icon">📅</div>
+        <div class="tab__label">Месяц</div>
+      </button>
+      <button class="tab" data-tab="income" type="button">
+        <div class="tab__icon">➕</div>
+        <div class="tab__label">Доход</div>
+      </button>
+      <button class="tab" data-tab="expense" type="button">
+        <div class="tab__icon">➖</div>
+        <div class="tab__label">Расход</div>
+      </button>
+      <button class="tab" data-tab="history" type="button">
+        <div class="tab__icon">📜</div>
+        <div class="tab__label">История</div>
+      </button>
+    </nav>
   </div>
 
-  <!-- Toast -->
-  <div id="toast" class="toast"></div>
+  <!-- TOAST -->
+  <div id="toast" class="toast" aria-live="polite"></div>
 
-  <!-- Modal -->
-  <div id="modal" class="modal">
-    <div class="modal__card">
+  <!-- MODAL -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal__card" role="dialog" aria-modal="true">
       <div class="modal__title" id="modalTitle"></div>
       <div class="modal__body" id="modalBody"></div>
       <div class="modal__actions" id="modalActions"></div>
