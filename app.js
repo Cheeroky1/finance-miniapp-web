@@ -46,3 +46,53 @@ document.querySelectorAll("[data-back]").forEach(btn => {
 
 // стартовый экран
 showScreen("menu");
+
+function getNumberValue(id){
+  const v = (document.getElementById(id).value || "").replace(",", ".");
+  const n = Number(v);
+  return Number.isFinite(n) ? n : NaN;
+}
+
+function getTextValue(id){
+  return (document.getElementById(id).value || "").trim();
+}
+
+function clearInputs(ids){
+  ids.forEach(id => (document.getElementById(id).value = ""));
+}
+
+document.getElementById("incomeSave").addEventListener("click", () => {
+  const amount = getNumberValue("incomeAmount");
+  const comment = getTextValue("incomeComment");
+
+  if (!amount || amount <= 0) {
+    tg?.HapticFeedback?.notificationOccurred("error");
+    alert("Введите сумму больше 0");
+    return;
+  }
+
+  // Пока просто подтверждение (следующим шагом отправим в бота)
+  tg?.HapticFeedback?.notificationOccurred("success");
+  alert(`Доход сохранён: +${amount} RUB${comment ? "\n" + comment : ""}`);
+
+  clearInputs(["incomeAmount", "incomeComment"]);
+  showScreen("menu");
+});
+
+document.getElementById("expenseSave").addEventListener("click", () => {
+  const amount = getNumberValue("expenseAmount");
+  const comment = getTextValue("expenseComment");
+
+  if (!amount || amount <= 0) {
+    tg?.HapticFeedback?.notificationOccurred("error");
+    alert("Введите сумму больше 0");
+    return;
+  }
+
+  tg?.HapticFeedback?.notificationOccurred("success");
+  alert(`Расход сохранён: -${amount} RUB${comment ? "\n" + comment : ""}`);
+
+  clearInputs(["expenseAmount", "expenseComment"]);
+  showScreen("menu");
+});
+
