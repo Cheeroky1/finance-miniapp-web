@@ -17,18 +17,25 @@
 }
 
 *{ box-sizing:border-box; }
-html, body{ height:100%; }
+html, body{ height:100%; background: linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 65%, var(--bg1) 100%);
+  background-attachment: fixed; background-color: var(--bg0); }
+
+html{ overscroll-behavior: none; }
+body{ overscroll-behavior-y: none; }
+
 
 body{
   margin:0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color:var(--text);
   background: linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 65%, var(--bg1) 100%);
+  background-attachment: fixed;
   -webkit-text-size-adjust: 100%;
   touch-action: manipulation;
 }
 
-.app{ min-height:100vh; display:flex; flex-direction:column; }
+.app{ min-height:100vh; display:flex; flex-direction:column; background: linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 65%, var(--bg1) 100%); }
+
 
 .topbar{ padding: 14px 16px 10px; }
 .topbar__title{ font-weight: 900; letter-spacing: .2px; font-size: 18px; }
