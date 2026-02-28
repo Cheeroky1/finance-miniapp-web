@@ -113,3 +113,39 @@ code{
 }
 
 .muted{ color:var(--muted); font-size:14px; }
+
+.label{
+  display:block;
+  margin-top:12px;
+  font-size:13px;
+  color:var(--muted);
+  font-weight:600;
+}
+
+.input{
+  width:100%;
+  margin-top:6px;
+  padding:12px 12px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#fff;
+  font-size:16px;
+  outline:none;
+}
+
+.input:focus{
+  border-color: rgba(46,166,255,.6);
+}
+
+.input-small{
+  padding:10px 12px;
+  font-size:14px;
+}
+
+.btn-primary{
+  margin-top:14px;
+  background: var(--accent);
+  border-color: transparent;
+  color:#fff;
+}
+
