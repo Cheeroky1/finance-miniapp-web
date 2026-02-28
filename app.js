@@ -668,6 +668,3 @@
     tg?.HapticFeedback?.selectionChanged();
   }));
 })();
-setActiveTab("month");
-showScreen("month");
-
