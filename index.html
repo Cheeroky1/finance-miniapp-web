@@ -15,15 +15,16 @@
     </header>
 
     <main class="content">
+
       <!-- MENU -->
-      <section id="screen-menu" class="screen active">
+      <section id="screen-menu" class="screen active visible">
         <div class="card">
           <div class="help">
             <div class="help-title">Инструкция</div>
             <div class="help-text">
-              • Расход: <code>продукты 1200</code> / <code>такси 350</code><br>
-              • Доход: <code>зарплата 90000</code><br>
-              • Копилка: <code>копилка 500</code> или <code>копилка -500</code>
+              • Доход/Расход — через формы ниже.<br>
+              • История — последние записи и удаление.<br>
+              • Копилка — цели, emoji, пополнение/снятие.
             </div>
           </div>
 
@@ -31,82 +32,147 @@
             <button class="btn" data-nav="month">📅 Месяц</button>
             <button class="btn" data-nav="income">➕ Доход</button>
             <button class="btn" data-nav="expense">➖ Расход</button>
-            <button class="btn" data-nav="last">🕒 Последние</button>
-            <button class="btn" data-nav="pig">🐷 Копилка</button>
-            <button class="btn btn-danger" data-nav="undo">↩️ Отменить последнюю</button>
+            <button class="btn" data-nav="history">📜 История</button>
+            <button class="btn" data-nav="piggy">🐷 Копилка</button>
           </div>
         </div>
       </section>
 
-      <!-- PLACEHOLDERS (пока заглушки) -->
+      <!-- MONTH -->
       <section id="screen-month" class="screen">
         <div class="card">
-          <div class="screen-title">📅 Месяц</div>
-          <div class="muted">Здесь будут итоги месяца и категории (как в боте).</div>
+          <div class="row-between">
+            <div>
+              <div class="screen-title">📅 Месяц</div>
+              <div class="muted" id="monthPeriod"></div>
+            </div>
+            <button class="btn btn-ghost btn-small" id="monthRefresh">Обновить</button>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi">
+              <div class="kpi-label">Доходы</div>
+              <div class="kpi-value" id="kpiIncome">0</div>
+              <div class="kpi-sub">RUB</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Расходы</div>
+              <div class="kpi-value" id="kpiExpense">0</div>
+              <div class="kpi-sub">RUB</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Баланс</div>
+              <div class="kpi-value" id="kpiBalance">0</div>
+              <div class="kpi-sub">RUB</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row-between">
+            <div class="block-title">Расходы по категориям</div>
+            <div class="muted small" id="monthTotalExpense"></div>
+          </div>
+
+          <div class="chart-wrap">
+            <canvas id="pie" width="320" height="320" aria-label="Круговая диаграмма расходов"></canvas>
+          </div>
+
+          <div class="list" id="monthCats"></div>
         </div>
+
         <button class="btn btn-ghost" data-back>↪ Меню</button>
       </section>
 
-<section id="screen-income" class="screen">
-  <div class="card">
-    <div class="screen-title">➕ Доход</div>
-
-    <label class="label">Сумма (RUB)</label>
-    <input id="incomeAmount" class="input" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Например: 90000">
-
-    <label class="label">Комментарий (необязательно)</label>
-    <input id="incomeComment" class="input input-small" type="text" maxlength="80" placeholder="Например: зарплата">
-
-    <button id="incomeSave" class="btn btn-primary">Сохранить</button>
-  </div>
-
-  <button class="btn btn-ghost" data-back>↪ Меню</button>
-</section>
-
-<section id="screen-expense" class="screen">
-  <div class="card">
-    <div class="screen-title">➖ Расход</div>
-
-    <label class="label">Сумма (RUB)</label>
-    <input id="expenseAmount" class="input" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Например: 350">
-
-    <label class="label">Комментарий (необязательно)</label>
-    <input id="expenseComment" class="input input-small" type="text" maxlength="80" placeholder="Например: такси">
-
-    <button id="expenseSave" class="btn btn-primary">Сохранить</button>
-  </div>
-
-  <button class="btn btn-ghost" data-back>↪ Меню</button>
-</section>
-
-      <section id="screen-last" class="screen">
+      <!-- INCOME -->
+      <section id="screen-income" class="screen">
         <div class="card">
-          <div class="screen-title">🕒 Последние</div>
-          <div class="muted">Здесь будет список последних операций.</div>
+          <div class="screen-title">➕ Доход</div>
+
+          <label class="label">Сумма (RUB)</label>
+          <input id="incomeAmount" class="input" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Например: 90000">
+
+          <label class="label">Категория</label>
+          <select id="incomeCategory" class="input select"></select>
+
+          <label class="label">Комментарий (необязательно)</label>
+          <input id="incomeComment" class="input input-small" type="text" maxlength="80" placeholder="Например: зарплата">
+
+          <button id="incomeSave" class="btn btn-primary" disabled>Сохранить</button>
         </div>
+
         <button class="btn btn-ghost" data-back>↪ Меню</button>
       </section>
 
-      <section id="screen-pig" class="screen">
+      <!-- EXPENSE -->
+      <section id="screen-expense" class="screen">
         <div class="card">
-          <div class="screen-title">🐷 Копилка</div>
-          <div class="muted">Здесь будут цели и суммы (как в боте).</div>
+          <div class="screen-title">➖ Расход</div>
+
+          <label class="label">Сумма (RUB)</label>
+          <input id="expenseAmount" class="input" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Например: 350">
+
+          <label class="label">Категория</label>
+          <select id="expenseCategory" class="input select"></select>
+
+          <label class="label">Комментарий (необязательно)</label>
+          <input id="expenseComment" class="input input-small" type="text" maxlength="80" placeholder="Например: такси">
+
+          <button id="expenseSave" class="btn btn-primary" disabled>Сохранить</button>
         </div>
+
         <button class="btn btn-ghost" data-back>↪ Меню</button>
       </section>
 
-      <section id="screen-undo" class="screen">
+      <!-- HISTORY -->
+      <section id="screen-history" class="screen">
         <div class="card">
-          <div class="screen-title">↩️ Отменить последнюю</div>
-          <div class="muted">Здесь будет кнопка подтверждения undo.</div>
+          <div class="row-between">
+            <div>
+              <div class="screen-title">📜 История</div>
+              <div class="muted small" id="historyHint">Последние операции</div>
+            </div>
+            <button class="btn btn-ghost btn-small" id="historyClear">Очистить</button>
+          </div>
+
+          <div class="list" id="historyList"></div>
         </div>
+
         <button class="btn btn-ghost" data-back>↪ Меню</button>
       </section>
+
+      <!-- PIGGY -->
+      <section id="screen-piggy" class="screen">
+        <div class="card">
+          <div class="row-between">
+            <div>
+              <div class="screen-title">🐷 Копилка</div>
+              <div class="muted small">Цели и их баланс</div>
+            </div>
+            <button class="btn btn-ghost btn-small" id="piggyAddGoal">+ Цель</button>
+          </div>
+
+          <div class="list" id="piggyGoals"></div>
+        </div>
+
+        <button class="btn btn-ghost" data-back>↪ Меню</button>
+      </section>
+
     </main>
   </div>
 
-  <script src="app.js"></script>
+  <!-- Toast -->
   <div id="toast" class="toast"></div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal__card">
+      <div class="modal__title" id="modalTitle"></div>
+      <div class="modal__body" id="modalBody"></div>
+      <div class="modal__actions" id="modalActions"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
-
