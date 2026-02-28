@@ -47,21 +47,37 @@
         <button class="btn btn-ghost" data-back>↪ Меню</button>
       </section>
 
-      <section id="screen-income" class="screen">
-        <div class="card">
-          <div class="screen-title">➕ Доход</div>
-          <div class="muted">Здесь будет форма “Доход” (или быстрый ввод как в боте).</div>
-        </div>
-        <button class="btn btn-ghost" data-back>↪ Меню</button>
-      </section>
+<section id="screen-income" class="screen">
+  <div class="card">
+    <div class="screen-title">➕ Доход</div>
 
-      <section id="screen-expense" class="screen">
-        <div class="card">
-          <div class="screen-title">➖ Расход</div>
-          <div class="muted">Здесь будет форма “Расход” (или быстрый ввод как в боте).</div>
-        </div>
-        <button class="btn btn-ghost" data-back>↪ Меню</button>
-      </section>
+    <label class="label">Сумма (RUB)</label>
+    <input id="incomeAmount" class="input" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Например: 90000">
+
+    <label class="label">Комментарий (необязательно)</label>
+    <input id="incomeComment" class="input input-small" type="text" maxlength="80" placeholder="Например: зарплата">
+
+    <button id="incomeSave" class="btn btn-primary">Сохранить</button>
+  </div>
+
+  <button class="btn btn-ghost" data-back>↪ Меню</button>
+</section>
+
+<section id="screen-expense" class="screen">
+  <div class="card">
+    <div class="screen-title">➖ Расход</div>
+
+    <label class="label">Сумма (RUB)</label>
+    <input id="expenseAmount" class="input" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Например: 350">
+
+    <label class="label">Комментарий (необязательно)</label>
+    <input id="expenseComment" class="input input-small" type="text" maxlength="80" placeholder="Например: такси">
+
+    <button id="expenseSave" class="btn btn-primary">Сохранить</button>
+  </div>
+
+  <button class="btn btn-ghost" data-back>↪ Меню</button>
+</section>
 
       <section id="screen-last" class="screen">
         <div class="card">
